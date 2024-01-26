@@ -279,7 +279,7 @@ namespace Ellipsis.Drive
         {
             System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
             JObject nodeTag = node.Tag as JObject;
-            string baseUrl = "https://api.ellipsis-drive.com/v3/ogc";
+            string baseUrl = $"{Ellipsis.Api.Settings.ApiUrl}/v3/ogc";
             if (nodeTag == null) return;
 
             if (nodeTag.Value<string>("method") != null)
@@ -364,7 +364,7 @@ namespace Ellipsis.Drive
                     if (block.Value<string>("type") == "vector" && from_browser == false)
                     {
                         string pathId = block.Value<string>("id");
-                        var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api.ellipsis-drive.com/v3/account/security/accessToken");
+                        var httpWebRequest = (HttpWebRequest)WebRequest.Create($"{Ellipsis.Api.Settings.ApiUrl}/v3/account/security/accessToken");
 
                         object[] a = new object[1];
                         a[0] = new { pathId = pathId, access = new { accessLevel = 100 } };
@@ -395,7 +395,7 @@ namespace Ellipsis.Drive
                         JObject data = JObject.Parse(responseFromServer);
 
                         string accessToken = data.Value<string>("token");
-                        string wfsUrl = $"https://api.ellipsis-drive.com/v3/ogc/wfs/{pathId}?token={accessToken}";
+                        string wfsUrl = $"{Ellipsis.Api.Settings.ApiUrl}/v3/ogc/wfs/{pathId}?token={accessToken}";
 
                         /*DialogForm dialogForm = new DialogForm();
                         dialogForm.SetUrl(wfsUrl);
@@ -756,6 +756,13 @@ namespace Ellipsis.Drive
                         continue;
                     }
 
+                    JObject access = nestedFolder.Value<JObject>("yourAccess");
+                    int accessLevel = access.Value<int>("accessLevel");
+
+                    if (accessLevel < 100)
+                    {
+                        continue;
+                    }
 
                     string type = nestedFolder.Value<string>("type");
 

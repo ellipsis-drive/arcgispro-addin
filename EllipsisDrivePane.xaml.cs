@@ -26,11 +26,15 @@ namespace ArcGISProAddIn
         {
             InitializeComponent();
 
+            Ellipsis.Api.Settings.Initialize();
+
             connect = new Connect();
             drive = new DriveView(DriveTree, connect, searchBox, null, browserButton, null);
             NameBox.TabIndex = 0;
             PassBox.TabIndex = 1;
             LogButton.TabIndex = 2;
+
+            this.infoText.Content = $"Ellipsis Drive ArcGIS Pro Add-In v{Ellipsis.Api.Settings.Version}\n{Ellipsis.Api.Settings.ApiUrl}";
         }
 
         private void OnLoginClick(object sender, RoutedEventArgs e)

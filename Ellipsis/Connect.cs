@@ -55,11 +55,11 @@ namespace Ellipsis.Api
                 {
                     queryParams.Add("type=[\"raster\", \"vector\", \"folder\"]");
                     string queryParamString = String.Join('&', queryParams);
-                    url = $"https://api.ellipsis-drive.com/v3/path/{pathId}/folder/list?{queryParamString}";
+                    url = $"{Ellipsis.Api.Settings.ApiUrl}/v3/path/{pathId}/folder/list?{queryParamString}";
                 }
                 else
                 {
-                    url = $"https://api.ellipsis-drive.com/v3/path/{pathId}";
+                    url = $"{Ellipsis.Api.Settings.ApiUrl}/v3/path/{pathId}";
                 }
             }
             else
@@ -67,7 +67,7 @@ namespace Ellipsis.Api
                 queryParams.Add("type=[\"raster\", \"vector\", \"folder\"]");
                 string queryParamString = String.Join('&', queryParams);
 
-                url = $"https://api.ellipsis-drive.com/v3/account/root/{pathId}?{queryParamString}";
+                url = $"{Ellipsis.Api.Settings.ApiUrl}/v3/account/root/{pathId}?{queryParamString}";
             }
 
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -99,7 +99,7 @@ namespace Ellipsis.Api
 
         public JObject SearchByName(string name, string pageStart)
         {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create($"https://api.ellipsis-drive.com/v3/path?root=[\"myDrive\"]&text={name}");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create($"{Ellipsis.Api.Settings.ApiUrl}/v3/path?root=[\"myDrive\"]&text={name}");
 
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "GET";
@@ -134,7 +134,7 @@ namespace Ellipsis.Api
 
         public bool LoginRequest()
         {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(this.URL);
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create($"{Ellipsis.Api.Settings.ApiUrl}/v3/account/login");
             httpWebRequest.Method = "POST";
             httpWebRequest.Accept = "application/json";
             httpWebRequest.ContentType = "application/json";
@@ -191,7 +191,5 @@ namespace Ellipsis.Api
         private string password;
         private string login_token;
         private bool logged_in = false;
-        private string URL = "https://api.ellipsis-drive.com/v1/account/login";
-        private string path_URL = "https://api.ellipsis-drive.com/v1";
     }
 }

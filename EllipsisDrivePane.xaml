@@ -46,6 +46,6 @@
         <Button x:Name="browserButton" Content="Open in browser" Margin="10,270,0,0" Grid.Row="1" HorizontalAlignment="Left" Width="92" Height="20" VerticalAlignment="Top" Grid.ColumnSpan="2" Visibility="Hidden"/>
         <TextBox x:Name="searchBox" Margin="56,10,22,267" TextWrapping="Wrap" Text="Search..." Grid.RowSpan="2" Grid.ColumnSpan="2" Visibility="Hidden"/>
         <Button x:Name="stopSearch" Content="x" Margin="14,10,0,270" Grid.RowSpan="2" Click="stopSearch_Click" Height="20" RenderTransformOrigin="-2.082,0.609" Width="25" HorizontalAlignment="Left" Grid.ColumnSpan="2" Visibility="Hidden"/>
-        <Label Content="Ellipsis Drive ArcGIS Pro Add-In v1.3" HorizontalAlignment="Left" Margin="7,279,0,0" Grid.Row="1" VerticalAlignment="Top" Width="193" FontSize="8" Grid.Column="1"/>
+        <Label x:Name="infoText" Content="Ellipsis Drive ArcGIS Pro Add-In v1.3" HorizontalAlignment="Center" Margin="0,270,0,0" Grid.Row="1" VerticalAlignment="Top" Width="145" FontSize="8" Height="30" Grid.Column="1"/>
     </Grid>
 </UserControl>
