@@ -99,7 +99,7 @@ namespace Ellipsis.Api
 
         public JObject SearchByName(string name, string pageStart)
         {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create($"{Ellipsis.Api.Settings.ApiUrl}/v3/path?root=[\"myDrive\"]&text={name}");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create($"{Ellipsis.Api.Settings.ApiUrl}/v3/path?root=[\"myDrive\",\"sharedWithMe\"]&text=\"{name}\"&type=[\"raster\",\"vector\"]");
 
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "GET";

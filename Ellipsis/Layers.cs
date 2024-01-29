@@ -113,7 +113,6 @@ namespace Ellipsis.Api
             });
         }
 
-
         private string URL;
         private string map_id;
         private string login_token;

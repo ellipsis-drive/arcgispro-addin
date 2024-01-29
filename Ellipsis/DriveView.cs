@@ -826,37 +826,55 @@ namespace Ellipsis.Drive
                 });
 
                 JObject paths = connect.SearchByName(name, nextFolderPageStart);
-                foreach (JObject path in paths["result"])
+                try
                 {
-                    if (buffer != null)
+                    foreach (JObject path in paths["result"])
                     {
-                        string type = path.Value<string>("type");
-                        if (type == "folder")
+                        if (buffer != null)
                         {
-                            buffer.Add(getFolderNode(path, 0));
+                            string type = path.Value<string>("type");
+                            if (type == "folder")
+                            {
+                                buffer.Add(getFolderNode(path, 0));
+                            }
+                            else if (type == "raster" || type == "vector")
+                            {
+                                buffer.Add(getBlockNode(path, 0));
+                            }
                         }
-                        else if (type == "raster" || type == "vector")
-                        {
-                            buffer.Add(getBlockNode(path, 0));
-                        }
+                        else
+                            return buffer;
                     }
-                    else
-                        return buffer;
+                    nextFolderPageStart = paths.Value<string>("nextPageStart");
                 }
-                nextFolderPageStart = paths.Value<string>("nextPageStart");
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return buffer;
+                }
+             
             } while (nextFolderPageStart != null);
 
             return buffer;
         }
 
+        private Task searchTask = null;
+
         //Searches drive asynchronously until name is not equal to searchInput text.
         private async Task searchDrive(string name)
         {
+            await Task.Delay(1000);
+
+            if (name != searchInput.Text) return;
+
             view.Items.Clear();
             initRoot(view.Items, "Loading...", "loading");
+
             var task1 = await Task.Run(() => searchPaths(name));
 
-            if (name != searchInput.Text || task1.Any((x) => x == null)) return;
+            //List<DriveViewItem> task1 = new List<DriveViewItem>();
+
+            if (name != searchInput.Text || task1 == null) return;
 
             view.Items.Clear();
             initRoot(view.Items, "Result", "result");
