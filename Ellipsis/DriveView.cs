@@ -161,25 +161,36 @@ namespace Ellipsis.Drive
             /* Maybe title, tag or header instead of name */
             if (vItem == null || vItem.Name == "loading") return null;
 
-            string baseUrl = "https://app.ellipsis-drive.com";
-            if (vItem.GetLevel() == 0)
+            string baseUrl = Ellipsis.Api.Settings.AppUrl;
+/*            if (vItem.GetLevel() == 0)
             {
                 return System.Diagnostics.Process.Start(new ProcessStartInfo($"{baseUrl}/drive/{vItem.Name}") { UseShellExecute = true });
-            }
+            }*/
 
             if (vItem.Tag != null)
             {
                 JObject selectedInfo = vItem.Tag as JObject;
-                if (selectedInfo.Value<string>("type") == "folder")
+
+                string type = selectedInfo.Value<string>("type");
+                if (type == "folder")
                 {
-                    var path = selectedInfo.Value<JObject>("path");
+                    var path = selectedInfo.Value<JObject>("driveLocation");
                     string root = path.Value<string>("root");
                     string pathId = path.Value<JArray>("path")[0].Value<string>("id");
+
+                    if (root == "myDrive")
+                    {
+                        root = "me";
+                    }
+                    else if (root == "sharedWithMe")
+                    {
+                        root = "shared";
+                    }
 
                     return System.Diagnostics.Process.Start(new ProcessStartInfo($"{baseUrl}/drive/{root}?pathId={pathId}") { UseShellExecute = true });
 
                 }
-                if (selectedInfo.Value<string>("type") == "map" || selectedInfo.Value<string>("type") == "shape")
+                if (type == "raster" || type == "vector")
                 {
                     return System.Diagnostics.Process.Start(new ProcessStartInfo($"{baseUrl}/view?mapId={selectedInfo.Value<string>("id")}") { UseShellExecute = true });
                 }
@@ -863,6 +874,8 @@ namespace Ellipsis.Drive
         //Searches drive asynchronously until name is not equal to searchInput text.
         private async Task searchDrive(string name)
         {
+            if (name == "") return;
+
             await Task.Delay(1000);
 
             if (name != searchInput.Text) return;
