@@ -13,9 +13,9 @@ namespace Ellipsis.Api
 
         public static void Initialize()
         {
-            //ApiUrl = "https://api.ellipsis-drive.com";
             Version = "1.4";
-            ApiUrl = "https://api.tnc.ellipsis-drive.com";
+            ApiUrl = "https://api.ellipsis-drive.com";
+            //ApiUrl = "https://api..ellipsis-drive.com";
         }
     }
 }
